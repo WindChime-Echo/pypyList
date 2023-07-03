@@ -48,62 +48,13 @@ const collection = (row) => {
 };
 
 // video
-let videoElement = null;
 const openVideo = (id) => {
-  // 创建一个新的 video 元素
-  videoElement = document.createElement('video');
-
   // 设置视频的源
-  videoElement.src = `https://jd.pypy.moe/api/v1/videos/${id}.mp4`;
-  // 视频开始加载回调
-  videoElement.onloadstart = async () => {
-
-  };
-  // 当视频准备就绪后，播放视频并尝试进入全屏模式
-  videoElement.oncanplay = () => {
-    videoElement.play();
-
-    // 尝试进入全屏模式
-    if (videoElement.requestFullscreen) {
-      videoElement.requestFullscreen();
-    } else if (videoElement.mozRequestFullScreen) {
-      // Firefox
-      videoElement.mozRequestFullScreen();
-    } else if (videoElement.webkitRequestFullscreen) {
-      // Chrome, Safari and Opera
-      videoElement.webkitRequestFullscreen();
-    } else if (videoElement.msRequestFullscreen) {
-      // IE/Edge
-      videoElement.msRequestFullscreen();
-    }
-  };
-
-  // 将 video 元素添加到 DOM
-  document.body.appendChild(videoElement);
+  const videoURL = `https://jd.pypy.moe/api/v1/videos/${id}.mp4`;
+  window.open(videoURL, '_blank');
 };
 
-const handleFullscreenChange = () => {
-  if (!document.fullscreenElement && !document.webkitIsFullScreen) {
-    if (videoElement) {
-      videoElement.pause();
-      document.body.removeChild(videoElement);
-      videoElement = null;
-    }
-  }
-};
 
-// 监听 fullscreenchange 和 webkitfullscreenchange 事件
-document.addEventListener('fullscreenchange', handleFullscreenChange);
-document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-
-// 在组件卸载时移除事件监听器
-onUnmounted(() => {
-  document.removeEventListener('fullscreenchange', handleFullscreenChange);
-  document.removeEventListener(
-    'webkitfullscreenchange',
-    handleFullscreenChange
-  );
-});
 </script>
 
 <style scoped>

@@ -1,4 +1,5 @@
 <script setup>
+import Setting from '@/components/setting/index.vue'
 const emit = defineEmits(['change'])
 const indexForUrl = [
   '/list',
@@ -10,7 +11,7 @@ const handleSelect = (Index) => {
 </script>
 
 <template>
-  <el-menu default-active="0" class="el-menu" @select="handleSelect">
+  <el-menu class="el-menu" @select="handleSelect">
     <el-menu-item index="0">
       <el-icon>
         <HomeFilled />
@@ -23,11 +24,17 @@ const handleSelect = (Index) => {
       </el-icon>
       <span>收藏</span>
     </el-menu-item>
+    <Setting class="setting" />
   </el-menu>
 </template>
 
 <style scoped>
 .el-menu {
   height: 100vh;
+}
+.setting {
+  position: absolute;
+  left: 40px;
+  bottom: 40px;
 }
 </style>

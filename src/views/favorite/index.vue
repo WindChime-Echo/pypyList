@@ -56,15 +56,11 @@ const emitPage = (val, type) => {
 const keyword = ref("");
 const search = () => {
   if (!keyword.value) return;
-  if (/^-?\d+(?:\.\d+)?$/.test(keyword.value)) {
-    const item = collectionList.value[Number(keyword.value) - 1];
-    totalData.value = !item ? [] : [item];
-  } else {
-    totalData.value = collectionList.value.filter((item) =>
-      item.name?.includes(keyword.value)
-    );
-  }
-};
+  totalData.value = collectionList.value.filter((item) => {
+    return item.id == keyword.value || item.name?.includes(keyword.value)
+  })
+}
+
 const reset = () => {
   keyword.value = "";
   totalData.value = collectionList.value;
@@ -72,9 +68,9 @@ const reset = () => {
 
 // options
 const collection = (row) => {
-  console.log(row);
   const collectionTag = row.collection;
-  const initRow = { ...row, collection: null };
+  const initRow = { ...row };
+  delete initRow.collection;
   console.log(initRow);
   collectionTag === 0
     ? collectionStore.addCollection(initRow)

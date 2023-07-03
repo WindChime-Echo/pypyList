@@ -1,5 +1,6 @@
 <script setup>
 import Menu from '@/components/menu/index.vue'
+
 import router from '@/router';
 import { RouterView } from 'vue-router'
 import { usePypyListStore } from '@/stores/pypyDance'

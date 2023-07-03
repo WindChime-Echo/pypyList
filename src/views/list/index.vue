@@ -56,15 +56,11 @@ const emitPage = (val, type) => {
 const keyword = ref("");
 const search = () => {
   if (!keyword.value) return;
-  if (/^-?\d+(?:\.\d+)?$/.test(keyword.value)) {
-    const item = pypyList.value[Number(keyword.value) - 1];
-    totalData.value = !item ? [] : [item];
-  } else {
-    totalData.value = pypyList.value.filter((item) =>
-      item.name?.includes(keyword.value)
-    );
-  }
-};
+  totalData.value = collectionList.value.filter((item) => {
+    return item.id == keyword.value || item.name?.includes(keyword.value)
+  })
+}
+
 const reset = () => {
   keyword.value = "";
   totalData.value = pypyList.value;
@@ -77,8 +73,8 @@ const update = () => {
 // options
 const collection = (row) => {
   const collectionTag = row.collection;
-  const initRow = { ...row, collection: null };
-  console.log(row)
+  const initRow = { ...row };
+  delete initRow.collection;
   collectionTag === 0
     ? collectionStore.addCollection(initRow)
     : collectionStore.deleteCollection(initRow);
