@@ -56,7 +56,7 @@ const emitPage = (val, type) => {
 const keyword = ref("");
 const search = () => {
   if (!keyword.value) return;
-  totalData.value = collectionList.value.filter((item) => {
+  totalData.value = pypyList.value.filter((item) => {
     return item.id == keyword.value || item.name?.includes(keyword.value)
   })
 }
