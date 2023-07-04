@@ -51,7 +51,22 @@ const collection = (row) => {
 const openVideo = (id) => {
   // 设置视频的源
   const videoURL = `https://jd.pypy.moe/api/v1/videos/${id}.mp4`;
-  window.open(videoURL, '_blank');
+
+  // 创建一个新的窗口
+  const win = window.open('', '_blank');
+
+  // 写入包含 <video> 标签的 HTML
+  win.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <body>
+      <video controls autoplay width="100%" height="100%">
+        <source src="${videoURL}" type="video/mp4">
+        您的浏览器不支持 HTML5 video 标签。
+      </video>
+    </body>
+    </html>
+  `);
 };
 
 
