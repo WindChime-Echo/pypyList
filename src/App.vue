@@ -10,7 +10,9 @@ import Index from '@/views/index/index.vue'
 
 <style scoped>
 .main {
-  width: 100vw;
+
+  width: 100%;
   height: 100vh;
+  overflow-y: auto; 
 }
 </style>

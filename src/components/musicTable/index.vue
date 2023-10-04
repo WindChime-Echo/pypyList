@@ -1,6 +1,6 @@
 <template>
   <div class="list">
-    <el-table :data="tableData" style="width: 100%" height="800">
+    <el-table :data="tableData" style="width: 100%" height="796">
       <el-table-column fixed prop="id" label="ID" width="150" />
       <el-table-column prop="name" label="曲名" min-width="340" />
       <el-table-column prop="url" label="播放" width="120">

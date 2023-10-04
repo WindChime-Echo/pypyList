@@ -16,12 +16,16 @@ const changeMenu = (url => {
 </script>
 
 <template>
-  <el-container>
-    <el-aside width="300px">
+  <el-container >
+    <el-aside>
       <Menu @change="changeMenu" />
     </el-aside>
     <el-main><router-view></router-view></el-main>
   </el-container>
 </template>
 
-<style scoped></style>
+<style scoped>
+::v-deep .el-container {
+  box-sizing: border-box!important;
+}
+</style>
