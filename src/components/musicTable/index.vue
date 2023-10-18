@@ -2,12 +2,12 @@
   <div class="list">
     <el-table :data="tableData" style="width: 100%" height="796">
       <el-table-column fixed prop="id" label="ID" width="150" />
-      <el-table-column prop="name" label="曲名" min-width="340" />
       <el-table-column prop="url" label="播放" width="120">
         <template #default="scope">
           <el-button :icon="VideoPlay" circle @click="openVideo(scope.row.id)" />
         </template>
       </el-table-column>
+      <el-table-column prop="name" label="曲名" min-width="340" />
       <el-table-column fixed="right" label="设置" width="200">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="collection(scope.row)">{{ scope.row.collection === 0 ?
