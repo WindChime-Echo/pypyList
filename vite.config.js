@@ -18,6 +18,18 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
   ],
+  css: {
+    preprocessorOptions: {
+      less: {
+        math: "always",
+        globalVars: {
+          // 全局变量
+          mainColor: "red",
+        },
+      },
+    },
+  },
+
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

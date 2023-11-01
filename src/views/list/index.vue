@@ -1,16 +1,7 @@
 <template>
   <div class="list">
-    <el-form :inline="true">
-      <el-form-item>
-        <el-input v-model="keyword" placeholder="请输入ID/曲名" />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="search">搜索</el-button>
-        <el-button @click="reset">重置</el-button>
-      </el-form-item>
-      <el-button v-if="false" @click="update">更新</el-button>
-    </el-form>
-    <MusicTable :tableData="tableData" :total="pypyList.length" @emitPage="emitPage" @collection="collection" />
+    <Search v-model="totalData" :rawData="pypyList" @reset="resetSearch" @findIndex="findIndex" />
+    <MusicTable ref="MusicTableRef" :tableData="tableData" v-model:totalData="totalData" />
   </div>
 </template>
 <script setup>
@@ -19,17 +10,18 @@ import { storeToRefs } from "pinia";
 import { usePypyListStore } from "@/stores/pypyDance";
 import { useCollectionStore } from "@/stores/collection";
 import MusicTable from "@/components/musicTable/index.vue";
+import Search from "@/components/search/index.vue";
 
 const pypyListStore = usePypyListStore();
 const collectionStore = useCollectionStore();
 const { pypyList } = storeToRefs(pypyListStore);
 
-const pageNum = ref(1);
-const pageSize = ref(20);
+const MusicTableRef = ref()
 const totalData = ref(pypyList.value);
 const tableData = computed(() => {
-  const startIndex = (pageNum.value - 1) * pageSize.value;
-  const endIndex = pageNum.value * pageSize.value;
+  const pages = MusicTableRef.value ?? {}
+  const startIndex = (pages.pageNum - 1) * pages.pageSize;
+  const endIndex = pages.pageNum * pages.pageSize;
 
   // 使用slice方法来获取对应页的数据
   return totalData.value?.slice(startIndex, endIndex).map((item) => {
@@ -39,46 +31,15 @@ const tableData = computed(() => {
   });
 });
 
-const emitPage = (val, type) => {
-  switch (type) {
-    case "pageNum":
-      pageNum.value = val;
-      break;
-    case "pageSize":
-      pageSize.value = val;
-      break;
-    default:
-      break;
-  }
-};
-
-// 搜索
-const keyword = ref("");
-const search = () => {
-  if (!keyword.value) return;
-  totalData.value = pypyList.value.filter((item) => {
-    return item.id == keyword.value || item.name?.includes(keyword.value)
-  })
+// reset
+const resetSearch = () => {
+  MusicTableRef.value.reset()
+}
+// 搜索id跳转对应位置
+const findIndex = (index) => {
+  MusicTableRef.value.findIndex(index)
 }
 
-const reset = () => {
-  keyword.value = "";
-  totalData.value = pypyList.value;
-};
-
-const update = () => {
-  console.log("update");
-};
-
-// options
-const collection = (row) => {
-  const collectionTag = row.collection;
-  const initRow = { ...row };
-  delete initRow.collection;
-  collectionTag === 0
-    ? collectionStore.addCollection(initRow)
-    : collectionStore.deleteCollection(initRow);
-};
 </script>
 
 <style scoped>
