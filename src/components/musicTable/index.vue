@@ -74,8 +74,8 @@ const findIndex = (index) => {
   !!successIndex.value ? totalData[successIndex.value].success = false : null
   successIndex.value = index
   totalData[index].success = true
-  if (pageSize.value < index) {
-    pageNum.value = Math.ceil(index / pageSize.value)
+  if (pageSize.value < (index + 1)) {
+    pageNum.value = Math.ceil((index + 1) / pageSize.value)
     emit('emitPage', pageNum.value, 'pageNum')
   }
   emit('update:totalData', totalData)
