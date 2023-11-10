@@ -45,7 +45,6 @@ const typeKey = ref('')
 const search = () => {
   if (!keyword.value?.trim() && !typeKey.value) return;
   const originData = !typeKey.value ? props.rawData : props.rawData.filter(item => item.group === typeKey.value)
-  console.log(searchType.value, 222)
   if (!keyword.value?.trim()) return emit('update:modelValue', originData);
 
   switch (String(searchType.value)) {

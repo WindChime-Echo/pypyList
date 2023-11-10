@@ -96,18 +96,17 @@ const openVideo = (id) => {
 
   // 写入包含 <video> 标签的 HTML
   win.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <body>
-      <video controls autoplay width="100%" height="100%">
-        <source src="${videoURL}" type="video/mp4">
-        您的浏览器不支持 HTML5 video 标签。
-      </video>
-    </body>
-    </html>
-  `);
-};
-
+  <!DOCTYPE html>
+  <html style="width:100%;height:100%;margin:0;padding:0;">
+  <body style="width:100%;height:100%;margin:0;padding:0;overflow:hidden;">
+    <video controls autoplay style="width:100%;height:100%;object-fit:cover;">
+      <source src="${videoURL}" type="video/mp4">
+      您的浏览器不支持 HTML5 video 标签。
+    </video>
+  </body>
+  </html>
+`)
+}
 defineExpose({
   reset,
   findIndex,
