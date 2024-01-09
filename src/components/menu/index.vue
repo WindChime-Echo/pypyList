@@ -1,17 +1,16 @@
 <script setup>
-import Setting from '@/components/setting/index.vue'
-const emit = defineEmits(['change'])
-const indexForUrl = [
-  '/list',
-  '/favorite'
-]
+import Setting from "@/components/setting/index.vue"
+const emit = defineEmits(["change"])
+const indexForUrl = ["/list", "/favorite"]
 const handleSelect = (Index) => {
-  emit('change', indexForUrl[Index])
+  emit("change", indexForUrl[Index])
 }
+
+emit("change", indexForUrl[0])
 </script>
 
 <template>
-  <el-menu class="el-menu" @select="handleSelect">
+  <el-menu class="el-menu" @select="handleSelect" default-active="0">
     <el-menu-item index="0">
       <el-icon>
         <HomeFilled />
