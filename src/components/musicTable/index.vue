@@ -3,7 +3,7 @@
     <el-table
       :data="tableData"
       style="width: 100%"
-      height="785"
+      height="84vh"
       :row-class-name="tableRowClassName"
     >
       <el-table-column prop="id" label="ID" width="60" />
