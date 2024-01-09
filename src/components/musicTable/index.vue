@@ -10,7 +10,7 @@
       <el-table-column prop="avatar" label="封面" width="80" align="center">
         <template #default="scope">
           <el-avatar
-            :size="50"
+            :size="65"
             :src="`https://img.youtube.com/vi/${extractVideoID(
               scope.row
             )}/maxresdefault.jpg`"
