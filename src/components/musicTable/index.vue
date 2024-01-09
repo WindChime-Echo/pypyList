@@ -6,7 +6,17 @@
       height="785"
       :row-class-name="tableRowClassName"
     >
-      <el-table-column prop="id" label="ID" width="150" />
+      <el-table-column prop="id" label="ID" width="60" />
+      <el-table-column prop="avatar" label="封面" width="80" align="center">
+        <template #default="scope">
+          <el-avatar
+            :size="50"
+            :src="`https://img.youtube.com/vi/${extractVideoID(
+              scope.row
+            )}/maxresdefault.jpg`"
+          ></el-avatar>
+        </template>
+      </el-table-column>
       <el-table-column prop="url" label="播放" width="120">
         <template #default="scope">
           <el-button :icon="VideoPlay" circle @click="openVideo(scope.row)" />
@@ -81,6 +91,14 @@ const collection = (row) => {
     : collectionStore.deleteCollection(initRow)
 }
 
+const extractVideoID = (row) => {
+  const originalUrl = row.originalUrl[0]
+  const regex =
+    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/
+
+  const match = originalUrl.match(regex)
+  return match ? match[1] : null
+}
 const reset = () => {
   pageNum.value = 1
   pageSize.value = 20
