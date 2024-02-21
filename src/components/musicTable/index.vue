@@ -13,7 +13,7 @@
             :size="65"
             :src="`https://img.youtube.com/vi/${extractVideoID(
               scope.row
-            )}/maxresdefault.jpg`"
+            )}/hqdefault.jpg`"
           ></el-avatar>
         </template>
       </el-table-column>

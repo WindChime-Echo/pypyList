@@ -34,6 +34,7 @@ export const usePypyListStore = defineStore("pypyList", () => {
     const { songs } = res
     localStorage.setItem(PYPY_LIST, JSON.stringify(songs))
     pypyList.value = songs
+    location.reload()
   }
 
   function editIsYouTuBe() {
