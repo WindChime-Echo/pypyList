@@ -130,7 +130,7 @@ const openVideo = (row) => {
   // 设置视频的源
   const id = row.id
   const videoURL = `https://jd.pypy.moe/api/v1/videos/${id}.mp4`
-
+  console.log(videoURL)
   // 创建一个新的窗口
   const win = window.open("", "_blank")
 
