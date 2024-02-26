@@ -1,27 +1,38 @@
 <template>
   <div>
-    <PlyrWrapper :videoId="currentVideoId" @videoEnded="playNext" />
-    <button @click="playPrev">上一首</button>
-    <button @click="playNext">下一首</button>
+    <PlyrWrapper
+      v-if="videoList.length > 0"
+      :videoUrl="currentVideoUrl"
+      @videoEnded="playNext"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from "vue"
-import PlyrWrapper from "@/components/PlyrWrapper/index.vue"
+import { storeToRefs } from "pinia"
 
-const videoList = ["Yw-0Iem6JXE", "MrUVFPhNloU"] // 示例视频ID列表
-const currentIndex = ref(0)
+import PlyrWrapper from "@/components/PlyrWrapper/index.vue"
+import { usePlayListStore } from "@/stores/playList"
+
+const playListStore = usePlayListStore()
+const { playList } = storeToRefs(playListStore)
+const refPlayList = ref(playList.value)
+
+const videoList = computed(() => {
+  // console.log(refPlayList.value)
+  return refPlayList.value.map((item) => {
+    const { id } = item
+    return `https://jd.pypy.moe/api/v1/videos/${id}.mp4`
+  })
+})
 
 // 计算当前视频ID
-const currentVideoId = computed(() => videoList[currentIndex.value])
-console.log(currentVideoId)
-// 切换视频的逻辑
-const playPrev = () => {
-  currentIndex.value =
-    (currentIndex.value - 1 + videoList.length) % videoList.length
-}
+const currentVideoUrl = computed(() => videoList.value[0])
+
+// // 切换视频的逻辑
+
 const playNext = () => {
-  currentIndex.value = (currentIndex.value + 1) % videoList.length
+  playListStore.nextVideo()
 }
 </script>

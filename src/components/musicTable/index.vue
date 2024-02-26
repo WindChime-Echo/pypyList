@@ -6,7 +6,7 @@
       height="84vh"
       :row-class-name="tableRowClassName"
     >
-      <el-table-column prop="id" label="ID" width="60" />
+      <el-table-column prop="id" label="ID" width="60" align="center" />
       <el-table-column prop="avatar" label="封面" width="80" align="center">
         <template #default="scope">
           <el-avatar
@@ -17,20 +17,29 @@
           ></el-avatar>
         </template>
       </el-table-column>
-      <el-table-column prop="url" label="播放" width="120">
+      <el-table-column prop="url" label="播放" width="120" align="center">
         <template #default="scope">
           <el-button :icon="VideoPlay" circle @click="openVideo(scope.row)" />
         </template>
       </el-table-column>
       <el-table-column prop="name" label="曲名" min-width="340" />
-      <el-table-column label="设置" width="200">
+      <el-table-column label="设置" width="200" align="center">
         <template #default="scope">
           <el-button
+            v-if="type === 'list'"
             link
             type="primary"
             size="small"
             @click="collection(scope.row)"
             >{{ scope.row.collection === 0 ? "收藏" : "取消收藏" }}</el-button
+          >
+          <el-button
+            v-if="type === 'playList'"
+            link
+            type="primary"
+            size="small"
+            @click="addPlayList(scope.row)"
+            >加入播放列表</el-button
           >
         </template>
       </el-table-column>
@@ -53,7 +62,9 @@ import { ref } from "vue"
 import _ from "lodash"
 import { usePypyListStore } from "@/stores/pypyDance"
 import { useCollectionStore } from "@/stores/collection"
+import { usePlayListStore } from "@/stores/playList"
 import { VideoPlay } from "@element-plus/icons-vue"
+import { extractVideoID } from "@/utils/tool"
 
 const emit = defineEmits(["update:totalData", "emitPage", "collection"])
 const props = defineProps({
@@ -69,6 +80,10 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  type: {
+    type: String,
+    default: "list", // ['list', 'playList']
+  },
 })
 const pageNum = ref(1)
 const pageSize = ref(20)
@@ -81,6 +96,7 @@ const handleCurrentChange = (val) => {
 
 const collectionStore = useCollectionStore()
 const pypyListStore = usePypyListStore()
+const playListStore = usePlayListStore()
 // options
 const collection = (row) => {
   const collectionTag = row.collection
@@ -91,14 +107,12 @@ const collection = (row) => {
     : collectionStore.deleteCollection(initRow)
 }
 
-const extractVideoID = (row) => {
-  const originalUrl = row.originalUrl[0]
-  const regex =
-    /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/
-
-  const match = originalUrl.match(regex)
-  return match ? match[1] : null
+const addPlayList = (row) => {
+  const initRow = { ...row }
+  delete initRow.collection
+  playListStore.addPlayList(initRow)
 }
+
 const reset = () => {
   pageNum.value = 1
   pageSize.value = 20
@@ -130,8 +144,6 @@ const openVideo = (row) => {
   // 设置视频的源
   const id = row.id
   const videoURL = `https://jd.pypy.moe/api/v1/videos/${id}.mp4`
-  console.log(videoURL)
-  // 创建一个新的窗口
   const win = window.open("", "_blank")
 
   // 写入包含 <video> 标签的 HTML

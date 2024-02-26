@@ -9,17 +9,18 @@ import { ref, watch, computed, onMounted, onUnmounted, nextTick } from "vue"
 import Plyr from "plyr"
 import "plyr/dist/plyr.css"
 
-// 通过 defineProps 接收外部传入的 videoId
+// 通过 defineProps 接收外部传入的视频链接
 const props = defineProps({
-  videoId: String,
+  videoUrl: String, // 修改为接收视频URL
 })
 
 const emit = defineEmits(["videoEnded"])
 
 const videoContainer = ref(null)
 
+// 修改计算属性以返回视频标签，包含传入的视频URL
 const videoHtml = computed(() => {
-  return `<div class="plyr__video-embed" data-plyr-provider="youtube" data-plyr-embed-id="${props.videoId}"></div>`
+  return `<video controls class="plyr__video-embed"><source src="${props.videoUrl}" type="video/mp4"></video>`
 })
 
 let plyrInstance = null
@@ -30,24 +31,20 @@ const initPlyr = async () => {
     plyrInstance.destroy()
   }
   if (videoContainer.value) {
-    plyrInstance = new Plyr(
-      videoContainer.value.querySelector(".plyr__video-embed"),
-      {
-        autoplay: true, // 尝试自动播放
-      }
-    )
+    plyrInstance = new Plyr(videoContainer.value.querySelector("video"), {
+      autoplay: true, // 尝试自动播放
+    })
 
     // 监听视频播放结束事件
     plyrInstance.on("ended", () => {
-      // 触发父组件的事件，例如自动播放下一首
-      emit("videoEnded")
+      emit("videoEnded") // 触发父组件的事件，例如自动播放下一首
     })
   }
 }
 
-// 监听 props.videoId 的变化来重新初始化 Plyr
+// 监听 props.videoUrl 的变化来重新初始化 Plyr
 watch(
-  () => props.videoId,
+  () => props.videoUrl,
   () => {
     initPlyr()
   }
