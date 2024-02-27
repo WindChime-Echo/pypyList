@@ -3,6 +3,7 @@
     <PlyrWrapper
       v-if="videoList.length > 0"
       :videoUrl="currentVideoUrl"
+      :flip="flip"
       @videoEnded="playNext"
     />
   </div>
@@ -29,6 +30,7 @@ const videoList = computed(() => {
 
 // 计算当前视频ID
 const currentVideoUrl = computed(() => videoList.value[0])
+const flip = computed(() => refPlayList.value[0]?.flip)
 
 // // 切换视频的逻辑
 

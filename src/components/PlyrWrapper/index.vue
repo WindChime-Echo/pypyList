@@ -12,6 +12,10 @@ import "plyr/dist/plyr.css"
 // 通过 defineProps 接收外部传入的视频链接
 const props = defineProps({
   videoUrl: String, // 修改为接收视频URL
+  flip: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const emit = defineEmits(["videoEnded"])
@@ -32,12 +36,19 @@ const initPlyr = async () => {
   }
   if (videoContainer.value) {
     plyrInstance = new Plyr(videoContainer.value.querySelector("video"), {
-      autoplay: true, // 尝试自动播放
+      autoplay: true,
     })
 
-    // 监听视频播放结束事件
+    // 根据 flip 属性应用翻转效果
+    const videoElement = videoContainer.value.querySelector("video")
+    if (props.flip) {
+      videoElement.style.transform = "scaleX(-1)"
+    } else {
+      videoElement.style.transform = "scaleX(1)"
+    }
+
     plyrInstance.on("ended", () => {
-      emit("videoEnded") // 触发父组件的事件，例如自动播放下一首
+      emit("videoEnded")
     })
   }
 }
@@ -60,3 +71,4 @@ onUnmounted(() => {
   }
 })
 </script>
+<style scoped></style>
