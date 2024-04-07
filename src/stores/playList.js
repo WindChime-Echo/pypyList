@@ -1,12 +1,17 @@
-import { ref, toRaw, reactive } from "vue"
-import { defineStore } from "pinia"
+import { ref, toRaw } from "vue"
+import { defineStore, storeToRefs } from "pinia"
 import { ElMessage } from "element-plus"
+import { usePypyListStore } from "@/stores/pypyDance"
 
 // BroadcastChannel
 const channel = new BroadcastChannel("playlist_channel")
 
 export const usePlayListStore = defineStore("playList", () => {
   const playList = ref([])
+  const isPlayRandomly = ref(false)
+
+  const pypyListStore = usePypyListStore()
+  const { pypyList } = storeToRefs(pypyListStore)
 
   function initPlayList(list) {
     if (!list) return
@@ -56,13 +61,22 @@ export const usePlayListStore = defineStore("playList", () => {
   }
 
   function nextVideo() {
+    console.log(111)
+    console.log(playList.value, isPlayRandomly.value)
     if (playList.value.length === 0) {
       ElMessage.error("播放列表暂无歌曲")
       return
+    } else if (playList.value.length === 1) {
+      if (isPlayRandomly.value === true) {
+        const randomIndex = Math.floor(Math.random() * pypyList.value.length)
+        const randomSong = pypyList.value[randomIndex]
+        addPlayList(randomSong)
+      }
     }
     playList.value.shift()
     sendPlaylist()
   }
+
   function topSong(row) {
     const index = playList.value.findIndex((item) => {
       return item.id === row.id
@@ -80,6 +94,10 @@ export const usePlayListStore = defineStore("playList", () => {
     playList.value.splice(1, 0, row)
     sendPlaylist()
   }
+  //  切换是否自动播放
+  function switchPlayRandomly() {
+    isPlayRandomly.value = !isPlayRandomly.value
+  }
 
   requestPlaylist()
 
@@ -90,6 +108,8 @@ export const usePlayListStore = defineStore("playList", () => {
     topSong,
     initPlayList,
     sendPlaylist,
+    isPlayRandomly,
+    switchPlayRandomly,
   }
 })
 

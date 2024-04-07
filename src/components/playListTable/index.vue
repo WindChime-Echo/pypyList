@@ -7,8 +7,22 @@
             <el-col :span="6">
               <span>播放列表</span>
             </el-col>
-            <el-col :span="4" :offset="13">
-              <el-button @click="playNext">下一首</el-button>
+            <el-col :span="8" :offset="9">
+              <div class="btns">
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  content="是否自动播放"
+                  placement="top-start"
+                >
+                  <el-switch
+                    :value="isPlayRandomly"
+                    @change="switchPlayRandomly"
+                  />
+                </el-tooltip>
+
+                <el-button @click="playNext">下一首</el-button>
+              </div>
             </el-col>
           </el-row>
         </div>
@@ -35,6 +49,7 @@
 <script setup>
 import { usePlayListStore } from "@/stores/playList"
 import { ref, onMounted, nextTick } from "vue"
+import { storeToRefs } from "pinia"
 
 const playListRef = ref(null)
 const tableHeight = ref("auto")
@@ -48,6 +63,7 @@ const props = defineProps({
 })
 
 const playListStore = usePlayListStore()
+const { isPlayRandomly } = storeToRefs(playListStore)
 
 const topSong = (row) => {
   playListStore.topSong(row)
@@ -55,6 +71,11 @@ const topSong = (row) => {
 
 const playNext = () => {
   playListStore.nextVideo()
+}
+
+const switchPlayRandomly = () => {
+  console.log(111, isPlayRandomly.value)
+  playListStore.switchPlayRandomly()
 }
 
 onMounted(async () => {
@@ -89,5 +110,11 @@ onMounted(async () => {
 }
 ::v-deep .el-card__body {
   height: 93%;
+}
+
+.btns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

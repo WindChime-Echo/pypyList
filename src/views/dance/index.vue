@@ -1,7 +1,6 @@
 <template>
   <div>
     <PlyrWrapper
-      v-if="videoList.length > 0"
       :videoUrl="currentVideoUrl"
       :flip="flip"
       @videoEnded="playNext"
