@@ -17,29 +17,41 @@
           ></el-avatar>
         </template>
       </el-table-column>
-      <el-table-column prop="url" label="播放" width="120" align="center">
-        <template #default="scope">
-          <el-button :icon="VideoPlay" circle @click="openVideo(scope.row)" />
-        </template>
-      </el-table-column>
-      <el-table-column prop="name" label="曲名" min-width="340" />
-      <el-table-column label="设置" width="200" align="center">
+      <el-table-column
+        prop="url"
+        :label="type === 'list' ? '播放' : '添加'"
+        width="120"
+        align="center"
+      >
         <template #default="scope">
           <el-button
             v-if="type === 'list'"
+            :icon="VideoPlay"
+            circle
+            @click="openVideo(scope.row)"
+          />
+          <el-button
+            v-if="type === 'playList'"
+            :icon="VideoPlay"
+            circle
+            @click="addPlayList(scope.row)"
+          />
+        </template>
+      </el-table-column>
+      <el-table-column prop="name" label="曲名" min-width="340" />
+      <el-table-column
+        label="设置"
+        width="200"
+        align="center"
+        v-if="type === 'list'"
+      >
+        <template #default="scope">
+          <el-button
             link
             type="primary"
             size="small"
             @click="collection(scope.row)"
             >{{ scope.row.collection === 0 ? "收藏" : "取消收藏" }}</el-button
-          >
-          <el-button
-            v-if="type === 'playList'"
-            link
-            type="primary"
-            size="small"
-            @click="addPlayList(scope.row)"
-            >加入播放列表</el-button
           >
         </template>
       </el-table-column>
