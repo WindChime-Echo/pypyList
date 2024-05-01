@@ -8,18 +8,20 @@ const isYouTube = ref(localStorage.getItem(IS_YOU_TUBE) || false)
 export const usePypyListStore = defineStore("pypyList", () => {
   const pypyList = ref([])
   const typeOption = ref([
-    { value: "2", label: "FitDance" },
-    { value: "3", label: "Marshall" },
-    { value: "4", label: "Mylee" },
-    { value: "5", label: "TML" },
-    { value: "6", label: "Golfy" },
-    { value: "7", label: "SouthVibes" },
-    { value: "9", label: "Others" },
-    { value: "1-1", label: "just dance solo" },
-    { value: "1-2", label: "just dance duet" },
-    { value: "1-3", label: "just dance trio" },
-    { value: "1-4", label: "just dance crew" },
-    { value: "1-5", label: "just dance fan made" },
+    { value: 0, label: "just dance solo" },
+    { value: 1, label: "just dance duet" },
+    { value: 2, label: "just dance trio" },
+    { value: 3, label: "just dance crew" },
+    { value: 4, label: "just dance fan made" },
+    { value: 5, label: "FitDance" },
+    { value: 6, label: "Marshall" },
+    { value: 7, label: "Mylee" },
+    { value: 8, label: "TML" },
+    { value: 9, label: "Golfy" },
+    { value: 10, label: "SouthVibes" },
+    { value: 11, label: "未知分类" },
+    { value: 12, label: "未知分类" },
+    { value: 13, label: "Others" }
   ])
 
   async function getPypyList(isForceUpdates = false) {

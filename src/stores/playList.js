@@ -61,8 +61,6 @@ export const usePlayListStore = defineStore("playList", () => {
   }
 
   function nextVideo() {
-    console.log(111)
-    console.log(playList.value, isPlayRandomly.value)
     if (playList.value.length === 0) {
       ElMessage.error("播放列表暂无歌曲")
       return
