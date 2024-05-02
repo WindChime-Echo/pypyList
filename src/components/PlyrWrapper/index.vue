@@ -57,10 +57,11 @@ const initPlyr = () => {
 }
 
 const applyFlipEffect = () => {
+  const wrapper = document.querySelector(".plyr__video-wrapper")
   if (props.flip) {
-    plyrVideo.value.style.transform = "scaleX(-1)"
+    wrapper.style.transform = "scaleX(-1)"
   } else {
-    plyrVideo.value.style.transform = "scaleX(1)"
+    wrapper.style.transform = "scaleX(1)"
   }
 }
 
@@ -78,6 +79,7 @@ watch(
         ],
       }
       muteAndUnmuteAfterDelay() // 当视频 URL 更新时再次应用静音/取消静音逻辑
+      applyFlipEffect()
     }
   },
   { immediate: true }
