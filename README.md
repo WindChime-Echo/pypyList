@@ -1,6 +1,9 @@
 # pypyList
 
-This template should help get you started developing with Vue 3 in Vite.
+# Archived Repository
+
+This repository has been archived and is no longer maintained. Please visit [[WannaDance](https://github.com/ClownpieceStripedAbyss/aya-dance-web) for the latest updates.
+
 
 ## Recommended IDE Setup
 
